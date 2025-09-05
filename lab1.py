@@ -21,7 +21,7 @@ def get_coef(index, prompt):
             print(f"{prompt.split(':')[0]}: {sys.argv[index]}")
             return coef
         except (ValueError, IndexError):
-            print(f"Некорректное значение коэффициента в командной строке.")
+            print("Некорректное значение коэффициента в командной строке.")
 
     # Если не получилось из командной строки, вводим с клавиатуры
     while True:
@@ -31,7 +31,7 @@ def get_coef(index, prompt):
             coef = float(coef_str)
             return coef
         except ValueError:
-            print("Некорректный ввод. Попробуйте снова.")
+            print("Некорректный ввод, попробуйте снова.")
 
 
 def get_roots(a, b, c):
@@ -47,6 +47,7 @@ def get_roots(a, b, c):
         list[float]: Список корней
     '''
 
+    # Списки для итоговых корней и корней t = x**2, соответственно
     result = []
     t_roots = []
 
@@ -54,7 +55,7 @@ def get_roots(a, b, c):
     D = b * b - 4 * a * c
 
     if D < 0:
-        # нет корней биквадратного уравнения
+        # Нет корней биквадратного уравнения
         return  result
 
     if D == 0.0:
@@ -66,17 +67,17 @@ def get_roots(a, b, c):
         t2 = (-b - sqD) / (2.0 * a)
         t_roots.append(t1)
         t_roots.append(t2)
+    # Случай с отрицательным D нет смысла обрабатывать, нет корней
 
     # Находим корни x из t = x**2
     for t in t_roots:
         if t > 0:
-            x1 = math.sqrt(t)
-            x2 = -math.sqrt(t)
-            result.append(x1)
-            result.append(x2)
+            x_abs = math.sqrt(t)
+            result.extend([x_abs, -x_abs])
         elif t == 0:
             result.append(0.0)
 
+    result = [round(i, 2) for i in result]
     return result
 
 
@@ -85,13 +86,13 @@ def main():
     Основная функция
     '''
     while True:
-        a = get_coef(1, 'Введите коэффициент А:')
+        a = get_coef(1, "Введите коэффициент А:")
         if a != 0:
             break
-        print("Коэффициент А не может быть равен 0 для биквадратного уравнения. Попробуйте снова.")
+        print("Коэффициент А не может быть равен 0 для биквадратного уравнения. Введите снова.")
 
-    b = get_coef(2, 'Введите коэффициент B:')
-    c = get_coef(3, 'Введите коэффициент C:')
+    b = get_coef(2, "Введите коэффициент B:")
+    c = get_coef(3, "Введите коэффициент C:")
 
     # Вычисление корней
     roots = get_roots(a, b, c)
@@ -99,20 +100,17 @@ def main():
     # Вывод корней
     len_roots = len(roots)
     if len_roots == 0:
-        print('Нет действительных корней')
+        print("Нет действительных корней")
     elif len_roots == 1:
-        print('Один действительный корень: {}'.format(roots[0]))
+        print("Один действительный корень: {}".format(roots[0]))
     elif len_roots == 2:
-        print('Два действительных корня: {} и {}'.format(roots[0], roots[1]))
+        print("Два действительных корня: {} и {}".format(roots[0], roots[1]))
     elif len_roots == 3:
-        print('Три действительных корня: {}, {}, {}'.format(roots[0], roots[1], roots[2]))
+        print("Три действительных корня: {}, {}, {}".format(roots[0], roots[1], roots[2]))
     elif len_roots == 4:
-        print('Четыре действительных корня: {}, {}, {}, {}'.format(roots[0], roots[1], roots[2], roots[3]))
+        print("Четыре действительных корня: {}, {}, {}, {}".format(roots[0], roots[1], roots[2], roots[3]))
 
 
 # Если сценарий запущен из командной строки
 if __name__ == "__main__":
     main()
-
-# Пример запуска
-# qr.py 1 0 -4
