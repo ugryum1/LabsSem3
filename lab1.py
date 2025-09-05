@@ -18,8 +18,11 @@ def get_coef(index, prompt):
     if index < len(sys.argv):
         try:
             coef = float(sys.argv[index])
-            print(f"{prompt.split(':')[0]}: {sys.argv[index]}")
-            return coef
+            if index == 1 and coef == 0.0:
+                print("Коэффициент А не может быть равен 0 для биквадратного уравнения. Введите снова.")
+            else:
+                print(f"{prompt.split(':')[0]}: {sys.argv[index]}")
+                return coef
         except (ValueError, IndexError):
             print("Некорректное значение коэффициента в командной строке.")
 
@@ -29,6 +32,9 @@ def get_coef(index, prompt):
             print(prompt)
             coef_str = input()
             coef = float(coef_str)
+            if index == 1 and coef == 0.0:
+                print("Коэффициент А не может быть равен 0 для биквадратного уравнения. Введите снова.")
+                continue
             return coef
         except ValueError:
             print("Некорректный ввод, попробуйте снова.")
@@ -80,6 +86,20 @@ def get_roots(a, b, c):
     result = [round(i, 2) for i in result]
     return result
 
+def print_equation(a, b, c):
+    # Вывод уравнения на экран
+    a = int(a) if a == int(a) else a
+    b = int(b) if b == int(b) else b
+    c = int(c) if c == int(c) else c
+
+    print("\nУравнение: ")
+
+    summand1 = ("" if a >= 0 else "-") + (str(abs(a)) if abs(a) != 1 else "") + "x**4"
+    summand2 = ((" + " if b > 0 else " - ") + (str(abs(b)) if abs(b) != 1 else "") + "x**2") if b else ""
+    summand3 = ((" + " if c > 0 else " - ") + str(abs(c))) if c else ""
+    equation = summand1 + summand2 + summand3
+
+    print(equation + "\n")
 
 def main():
     '''
@@ -96,6 +116,9 @@ def main():
 
     # Вычисление корней
     roots = get_roots(a, b, c)
+
+    # Вывод уравнения
+    print_equation(a, b, c)
 
     # Вывод корней
     len_roots = len(roots)

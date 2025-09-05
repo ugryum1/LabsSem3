@@ -7,6 +7,22 @@ class BiquadraticSolver:
         self.b = b
         self.c = c
 
+    def print_equation(self):
+        # Вывод уравнения на экран
+        a = int(self.a) if self.a == int(self.a) else self.a
+        b = int(self.b) if self.b == int(self.b) else self.b
+        c = int(self.c) if self.c == int(self.c) else self.c
+
+        print("\nУравнение: ")
+
+        summand1 = ("" if a >= 0 else "-") + (str(abs(a)) if abs(a) != 1 else "") + "x**4"
+        summand2 = ((" + " if b > 0 else " - ") + (str(abs(b)) if abs(b) != 1 else "") + "x**2") if b else ""
+        summand3 = ((" + " if c > 0 else " - ") + str(abs(c))) if c else ""
+        equation = summand1 + summand2 + summand3
+
+        print(equation + "\n")
+
+
     def solve(self):
         a, b, c = self.a, self.b, self.c
 
@@ -66,8 +82,11 @@ class InputHandler:
         if index < len(sys.argv):
             try:
                 coef = float(sys.argv[index])
-                print(f"{prompt.split(':')[0]}: {sys.argv[index]}")
-                return coef
+                if index == 1 and coef == 0.0:
+                    print("Коэффициент А не может быть равен 0 для биквадратного уравнения. Введите снова.")
+                else:
+                    print(f"{prompt.split(':')[0]}: {sys.argv[index]}")
+                    return coef
             except (ValueError, IndexError):
                 print("Некорректное значение коэффициента в командной строке.")
 
@@ -77,22 +96,21 @@ class InputHandler:
                 print(prompt)
                 coef_str = input()
                 coef = float(coef_str)
+                if index == 1 and coef == 0.0:
+                    print("Коэффициент А не может быть равен 0 для биквадратного уравнения. Введите снова.")
+                    continue
                 return coef
             except ValueError:
                 print("Некорректный ввод, попробуйте снова.")
 
 
 def main():
-    while True:
-        a = InputHandler.get_coef(1, "Введите коэффициент А:")
-        if a != 0:
-            break
-        print("Коэффициент А не может быть равен 0 для биквадратного уравнения. Введите снова.")
-
+    a = InputHandler.get_coef(1, "Введите коэффициент А:")
     b = InputHandler.get_coef(2, "Введите коэффициент B:")
     c = InputHandler.get_coef(3, "Введите коэффициент C:")
 
     solver = BiquadraticSolver(a, b, c)
+    solver.print_equation()
     solver.print_solution()
 
 # Если сценарий запущен из командной строки
