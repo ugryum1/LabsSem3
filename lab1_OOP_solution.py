@@ -18,7 +18,7 @@ class BiquadraticSolver:
         summand1 = ("" if a >= 0 else "-") + (str(abs(a)) if abs(a) != 1 else "") + "x**4"
         summand2 = ((" + " if b > 0 else " - ") + (str(abs(b)) if abs(b) != 1 else "") + "x**2") if b else ""
         summand3 = ((" + " if c > 0 else " - ") + str(abs(c))) if c else ""
-        equation = summand1 + summand2 + summand3
+        equation = summand1 + summand2 + summand3 + " = 0"
 
         print(equation + "\n")
 
